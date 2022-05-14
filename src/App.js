@@ -1,23 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './Components/Header';
+import AccountContainer from './Components/AccountContainer';
+import { useState, useEffect } from 'react';
+import Account from './Components/Account';
+import Button from './Components/Button';
 
 function App() {
-  return (
+const [user, setUser] = useState([])
+
+const request = async () => {
+  let req = await fetch('http://localhost:9292/users/5')
+  let res = await req.json()
+  setUser(res)
+}
+useEffect(() => {
+  request()
+  }, [])
+
+  console.log(user.accounts)
+
+return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <p> {user.full_name} </p>
+      <p> {user.country_of_residence} </p>
+      {/* <div>
+        {
+          user.accounts.map((account) => {
+            return(
+              <Account key={account.id} account={account} />
+            )
+          })
+        }
+      </div> */}
+      <AccountContainer />
+      <Button />
     </div>
   );
 }
